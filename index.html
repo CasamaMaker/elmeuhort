@@ -19,7 +19,6 @@
 
 
 
-
 <!DOCTYPE html>
 <html lang="ca">
 <head>
@@ -43,7 +42,7 @@
       }
 
       .tabs button {
-          flex: 1 0 14.28%; /* 12 mesos */
+          flex: 1 0 14.28%;
           padding: 10px;
           background: #34495e;
           color: white;
@@ -69,32 +68,53 @@
 </head>
 <body>
 
-<div class="tabs">
-    <button class="tab-link active" onclick="openMonth(event,'Gener')">Gener</button>
-    <button class="tab-link" onclick="openMonth(event,'Febrer')">Febrer</button>
-    <button class="tab-link" onclick="openMonth(event,'Març')">Març</button>
-    <button class="tab-link" onclick="openMonth(event,'Abril')">Abril</button>
-    <button class="tab-link" onclick="openMonth(event,'Maig')">Maig</button>
-    <button class="tab-link" onclick="openMonth(event,'Juny')">Juny</button>
-    <button class="tab-link" onclick="openMonth(event,'Juliol')">Juliol</button>
-    <button class="tab-link" onclick="openMonth(event,'Agost')">Agost</button>
-    <button class="tab-link" onclick="openMonth(event,'Setembre')">Setembre</button>
-    <button class="tab-link" onclick="openMonth(event,'Octubre')">Octubre</button>
-    <button class="tab-link" onclick="openMonth(event,'Novembre')">Novembre</button>
-    <button class="tab-link" onclick="openMonth(event,'Desembre')">Desembre</button>
+<div class="tabs" id="tabs">
+    <!-- Botons dels mesos es generaran automàticament -->
 </div>
 
-<div id="Gener" class="tab-content">
-    <h2>Gener</h2>
-    <p>Cultius: Enciams, espinacs, porros</p>
+<div id="tab-contents">
+    <!-- Contingut dels mesos es generarà automàticament -->
 </div>
-<div id="Febrer" class="tab-content" style="display:none">
-    <h2>Febrer</h2>
-    <p>Cultius: Cols, enciams, raves</p>
-</div>
-<!-- Afegir la resta de mesos igualment -->
 
 <script>
+const SHEET_ID = "1VmQdVqhokSYiHTfNNg7z4v4fLPePhAD53za76YBJnhg";
+const SHEET_NAME = "Full1"; // nom de la fulla del Google Sheet
+const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${SHEET_NAME}&tq=&tqx=out:json`;
+
+let mesos = ["Gener","Febrer","Març","Abril","Maig","Juny","Juliol","Agost","Setembre","Octubre","Novembre","Desembre"];
+
+fetch(URL)
+  .then(res => res.text())
+  .then(data => {
+    // El Google Sheets JSON ve envoltat de text
+    const json = JSON.parse(data.substring(47, data.length-2));
+    const rows = json.table.rows.map(r => r.c.map(c => c ? c.v : ""));
+
+    // Generar els botons dels mesos
+    const tabsDiv = document.getElementById("tabs");
+    mesos.forEach((mes, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "tab-link";
+        if(idx===0) btn.classList.add("active");
+        btn.innerText = mes;
+        btn.onclick = (e) => openMonth(e, mes);
+        tabsDiv.appendChild(btn);
+    });
+
+    // Generar el contingut dels mesos
+    const contentDiv = document.getElementById("tab-contents");
+    mesos.forEach((mes, idx) => {
+        const div = document.createElement("div");
+        div.id = mes;
+        div.className = "tab-content";
+        if(idx!==0) div.style.display = "none";
+        const cultius = rows.filter(r => r[1] === mes).map(r => r[0]);
+        div.innerHTML = `<h2>${mes}</h2><p>Cultius: ${cultius.join(", ")}</p>`;
+        contentDiv.appendChild(div);
+    });
+  })
+  .catch(err => console.error("Error carregant Google Sheet:", err));
+
 function openMonth(evt, monthName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tab-content");

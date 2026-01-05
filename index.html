@@ -526,28 +526,14 @@ function openMonth(evt, monthName) {
             if (mesRows.length === 0) {
               div.innerHTML = `<div class="empty-state">No hi ha tasques per aquest mes</div>`;
             } else {
-              // const accions = [...new Set(mesRows.map(r => r[3]))];
-              const seccions = [
-                { nom: "Plantació", valors: ["Plantar", "Plantació"] },
-                { nom: "Poda", valors: ["Poda", "Podar"] },
-                { nom: "Collir", valors: ["Collir", "Collita"] }
-              ];
-
+              const accions = [...new Set(mesRows.map(r => r[1]))];
+              
               let html = `<div class="stats-bar"></div>`;
               
-              // accions.forEach(accio => {
-              //   html += `<div class="action-section"><div class="action-header">${accio}</div>`;
+              accions.forEach(accio => {
+                html += `<div class="action-section"><div class="action-header">${accio}</div>`;
                 
-              //   mesRows.filter(r => r[3] === accio).forEach(r => {
-              seccions.forEach(seccio => {
-              const files = mesRows.filter(r => seccio.valors.includes(r[3]));
-              if (files.length === 0) return;
-
-              html += `<div class="action-section">
-                        <div class="action-header">${seccio.nom}</div>`;
-
-              files.forEach(r => {
-
+                mesRows.filter(r => r[3] === accio).forEach(r => {
                   const planta = r[0] || "Sense nom";
                   const lluna = r[4] || "";
                   const tipus = r[6] || "";

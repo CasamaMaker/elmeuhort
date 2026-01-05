@@ -175,7 +175,7 @@ function openMonth(evt, monthName) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🌱 el Meu Hort</title>
+  <title>el Meu Hort</title>
   <style>
     * {
       margin: 0;
@@ -184,236 +184,214 @@ function openMonth(evt, monthName) {
     }
     
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      padding: 20px;
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      color: #333;
     }
     
     .header {
-      text-align: center;
-      color: white;
-      margin-bottom: 30px;
+      background: white;
+      padding: 16px 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      margin-bottom: 1px;
     }
     
     .header h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-    }
-    
-    .header p {
-      font-size: 1.1em;
-      opacity: 0.9;
+      font-size: 1.5em;
+      font-weight: 600;
+      color: #2c3e50;
     }
     
     .tabs-container {
       background: white;
-      border-radius: 20px 20px 0 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
       overflow-x: auto;
-      box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+      margin-bottom: 1px;
     }
     
     .tabs {
       display: flex;
-      background: white;
-      padding: 10px;
+      padding: 8px 12px;
+      gap: 8px;
       min-width: min-content;
     }
     
     .tabs button {
-      padding: 12px 24px;
-      background: #f0f0f0;
-      color: #555;
-      border: none;
-      border-radius: 12px;
+      padding: 8px 16px;
+      background: #f8f9fa;
+      color: #666;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
       cursor: pointer;
-      transition: all 0.3s;
-      font-size: 1em;
-      font-weight: 600;
-      margin: 0 5px;
+      font-size: 0.9em;
+      font-weight: 500;
       white-space: nowrap;
+      transition: all 0.2s;
     }
     
     .tabs button:hover {
-      background: #e0e0e0;
-      transform: translateY(-2px);
+      background: #e9ecef;
+      border-color: #999;
     }
     
     .tabs button.active {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #2c3e50;
       color: white;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      border-color: #2c3e50;
     }
     
     .content-container {
-      background: white;
-      border-radius: 0 0 20px 20px;
-      padding: 30px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-      min-height: 400px;
+      padding: 16px;
     }
     
     .tab-content {
       display: none;
-      animation: fadeIn 0.4s;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .month-title {
-      font-size: 2em;
-      color: #667eea;
-      margin-bottom: 25px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
     }
     
     .action-section {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
     
     .action-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 1.4em;
-      color: #333;
-      margin-bottom: 15px;
-      padding-bottom: 10px;
-      border-bottom: 3px solid #667eea;
-    }
-    
-    .action-icon {
-      font-size: 1.3em;
-    }
-    
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
+      font-size: 1em;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 10px;
+      padding: 8px 12px;
+      background: white;
+      border-left: 3px solid #2c3e50;
     }
     
     .plant-card {
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      transition: all 0.3s;
-      border-left: 5px solid #667eea;
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: box-shadow 0.2s;
     }
     
     .plant-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    
+    .plant-card.completed {
+      opacity: 0.6;
+      background: #f8f9fa;
+    }
+    
+    .plant-card.completed .plant-name {
+      text-decoration: line-through;
+      color: #999;
+    }
+    
+    .checkbox-container {
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+    
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: #2c3e50;
+    }
+    
+    .plant-info {
+      flex: 1;
+      min-width: 0;
     }
     
     .plant-name {
-      font-size: 1.3em;
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-weight: 600;
+      font-size: 0.95em;
+      color: #2c3e50;
+      margin-bottom: 6px;
     }
     
-    .info-row {
+    .info-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
+      gap: 6px;
+      font-size: 0.8em;
     }
     
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.85em;
-      font-weight: 600;
-      background: white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    
-    .badge-moon {
-      background: #ffd93d;
-      color: #333;
-    }
-    
-    .badge-type {
-      background: #6bcf7f;
-      color: white;
+    .tag {
+      padding: 3px 8px;
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      color: #666;
+      white-space: nowrap;
     }
     
     .notes {
-      margin-top: 12px;
-      padding: 10px;
-      background: rgba(255,255,255,0.7);
-      border-radius: 8px;
-      font-size: 0.9em;
-      color: #555;
-      line-height: 1.5;
+      margin-top: 6px;
+      font-size: 0.85em;
+      color: #666;
+      line-height: 1.4;
     }
     
     .loading {
       text-align: center;
-      padding: 50px;
-      font-size: 1.2em;
-      color: #667eea;
+      padding: 40px;
+      color: #999;
     }
     
     .empty-state {
       text-align: center;
-      padding: 50px;
+      padding: 40px;
       color: #999;
+      background: white;
+      border-radius: 6px;
+    }
+
+    .stats-bar {
+      background: white;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85em;
+      color: #666;
+    }
+
+    .stats-bar strong {
+      color: #2c3e50;
     }
     
     @media (max-width: 768px) {
       .header h1 {
-        font-size: 2em;
-      }
-      
-      .tabs button {
-        padding: 10px 16px;
-        font-size: 0.9em;
+        font-size: 1.3em;
       }
       
       .content-container {
-        padding: 20px;
+        padding: 12px;
       }
       
-      .cards-grid {
-        grid-template-columns: 1fr;
+      .plant-card {
+        padding: 10px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>🌱 el Meu Hort</h1>
-      <p>Planifica i organitza les teves tasques de l'hort mes a mes</p>
-    </div>
-    
-    <div class="tabs-container">
-      <div class="tabs" id="tabs"></div>
-    </div>
-    
-    <div class="content-container">
-      <div class="loading" id="loading">⏳ Carregant informació de l'hort...</div>
-      <div id="tab-contents"></div>
-    </div>
+  <div class="header">
+    <h1>el Meu Hort</h1>
+  </div>
+  
+  <div class="tabs-container">
+    <div class="tabs" id="tabs"></div>
+  </div>
+  
+  <div class="content-container">
+    <div class="loading" id="loading">Carregant...</div>
+    <div id="tab-contents"></div>
   </div>
 
   <script>
@@ -421,125 +399,151 @@ function openMonth(evt, monthName) {
     const SHEET_NAME = "Full1";
     const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${SHEET_NAME}&tqx=out:json`;
     
-    const mesos = [
-      { nom: "Gener", emoji: "❄️" },
-      { nom: "Febrer", emoji: "🌨️" },
-      { nom: "Març", emoji: "🌸" },
-      { nom: "Abril", emoji: "🌷" },
-      { nom: "Maig", emoji: "🌺" },
-      { nom: "Juny", emoji: "☀️" },
-      { nom: "Juliol", emoji: "🌻" },
-      { nom: "Agost", emoji: "🍅" },
-      { nom: "Setembre", emoji: "🍂" },
-      { nom: "Octubre", emoji: "🍁" },
-      { nom: "Novembre", emoji: "🌰" },
-      { nom: "Desembre", emoji: "🎄" }
-    ];
+    const mesos = ["Gener","Febrer","Març","Abril","Maig","Juny","Juliol","Agost","Setembre","Octubre","Novembre","Desembre"];
     
-    const accionIcons = {
-      "Sembrar": "🌱",
-      "Plantar": "🪴",
-      "Collir": "🧺",
-      "Trasplantar": "🌿",
-      "Cuidar": "💚",
-      "Podar": "✂️",
-      "Adobar": "🌾"
-    };
+    let completedTasks = {};
     
-    function getActionIcon(accio) {
-      for (let key in accionIcons) {
-        if (accio.toLowerCase().includes(key.toLowerCase())) {
-          return accionIcons[key];
-        }
+    async function loadCompletedTasks() {
+      try {
+        const result = await window.storage.get('hort-completed-tasks');
+        completedTasks = result ? JSON.parse(result.value) : {};
+      } catch (e) {
+        completedTasks = {};
       }
-      return "📋";
     }
     
-    fetch(URL)
-      .then(res => res.text())
-      .then(data => {
-        const json = JSON.parse(data.substring(47, data.length - 2));
-        const rows = json.table.rows.map(r => r.c.map(c => c ? c.v : ""));
-        
-        document.getElementById("loading").style.display = "none";
-        
-        // Generar botons dels mesos
-        const tabsDiv = document.getElementById("tabs");
-        mesos.forEach((mes, idx) => {
-          const btn = document.createElement("button");
-          btn.className = "tab-link";
-          if (idx === 0) btn.classList.add("active");
-          btn.innerHTML = `${mes.emoji} ${mes.nom}`;
-          btn.onclick = (e) => openMonth(e, mes.nom);
-          tabsDiv.appendChild(btn);
-        });
-        
-        // Generar contingut dels mesos
-        const contentDiv = document.getElementById("tab-contents");
-        mesos.forEach((mes, idx) => {
-          const div = document.createElement("div");
-          div.id = mes.nom;
-          div.className = "tab-content";
-          if (idx === 0) div.style.display = "block";
+    async function saveCompletedTasks() {
+      try {
+        await window.storage.set('hort-completed-tasks', JSON.stringify(completedTasks));
+      } catch (e) {
+        console.error('Error guardant tasques:', e);
+      }
+    }
+    
+    function getTaskId(mes, planta, accio) {
+      return `${mes}_${planta}_${accio}`.replace(/\s/g, '_');
+    }
+    
+    function toggleTask(taskId, checkbox) {
+      completedTasks[taskId] = checkbox.checked;
+      saveCompletedTasks();
+      
+      const card = checkbox.closest('.plant-card');
+      if (checkbox.checked) {
+        card.classList.add('completed');
+      } else {
+        card.classList.remove('completed');
+      }
+      
+      updateStats();
+    }
+
+    function updateStats() {
+      const activeMonth = document.querySelector('.tab-content[style*="display: block"]');
+      if (!activeMonth) return;
+
+      const totalTasks = activeMonth.querySelectorAll('.plant-card').length;
+      const completedCount = activeMonth.querySelectorAll('.plant-card.completed').length;
+      
+      const statsBar = activeMonth.querySelector('.stats-bar');
+      if (statsBar) {
+        statsBar.innerHTML = `
+          <span>Total tasques: <strong>${totalTasks}</strong></span>
+          <span>Fetes: <strong>${completedCount}</strong> / Pendents: <strong>${totalTasks - completedCount}</strong></span>
+        `;
+      }
+    }
+    
+    async function init() {
+      await loadCompletedTasks();
+      
+      fetch(URL)
+        .then(res => res.text())
+        .then(data => {
+          const json = JSON.parse(data.substring(47, data.length - 2));
+          const rows = json.table.rows.map(r => r.c.map(c => c ? c.v : ""));
           
-          const mesRows = rows.filter(r => r[1] === mes.nom);
+          document.getElementById("loading").style.display = "none";
           
-          if (mesRows.length === 0) {
-            div.innerHTML = `
-              <div class="month-title">${mes.emoji} ${mes.nom}</div>
-              <div class="empty-state">
-                <p>📭 No hi ha tasques programades per aquest mes</p>
-              </div>
-            `;
-          } else {
-            const accions = [...new Set(mesRows.map(r => r[3]))];
+          const tabsDiv = document.getElementById("tabs");
+          mesos.forEach((mes, idx) => {
+            const btn = document.createElement("button");
+            btn.className = "tab-link";
+            if (idx === 0) btn.classList.add("active");
+            btn.textContent = mes;
+            btn.onclick = (e) => openMonth(e, mes);
+            tabsDiv.appendChild(btn);
+          });
+          
+          const contentDiv = document.getElementById("tab-contents");
+          mesos.forEach((mes, idx) => {
+            const div = document.createElement("div");
+            div.id = mes;
+            div.className = "tab-content";
+            if (idx === 0) div.style.display = "block";
             
-            let html = `<div class="month-title">${mes.emoji} ${mes.nom}</div>`;
+            const mesRows = rows.filter(r => r[1] === mes);
             
-            accions.forEach(accio => {
-              const icon = getActionIcon(accio);
-              html += `
-                <div class="action-section">
-                  <div class="action-header">
-                    <span class="action-icon">${icon}</span>
-                    <span>${accio}</span>
-                  </div>
-                  <div class="cards-grid">
-              `;
+            if (mesRows.length === 0) {
+              div.innerHTML = `<div class="empty-state">No hi ha tasques per aquest mes</div>`;
+            } else {
+              const accions = [...new Set(mesRows.map(r => r[3]))];
               
-              mesRows.filter(r => r[3] === accio).forEach(r => {
-                const planta = r[0] || "Sense nom";
-                const lluna = r[2] || "—";
-                const tipus = r[4] || "—";
-                const notes = r[5] || "Sense notes addicionals";
+              let html = `<div class="stats-bar"></div>`;
+              
+              accions.forEach(accio => {
+                html += `<div class="action-section"><div class="action-header">${accio}</div>`;
                 
-                html += `
-                  <div class="plant-card">
-                    <div class="plant-name">
-                      🌿 ${planta}
+                mesRows.filter(r => r[3] === accio).forEach(r => {
+                  const planta = r[0] || "Sense nom";
+                  const lluna = r[2] || "";
+                  const tipus = r[4] || "";
+                  const notes = r[5] || "";
+                  
+                  const taskId = getTaskId(mes, planta, accio);
+                  const isCompleted = completedTasks[taskId] || false;
+                  
+                  html += `
+                    <div class="plant-card ${isCompleted ? 'completed' : ''}">
+                      <div class="checkbox-container">
+                        <input type="checkbox" class="checkbox" 
+                               data-task-id="${taskId}"
+                               ${isCompleted ? 'checked' : ''}>
+                      </div>
+                      <div class="plant-info">
+                        <div class="plant-name">${planta}</div>
+                        <div class="info-tags">
+                          ${lluna ? `<span class="tag">Lluna: ${lluna}</span>` : ''}
+                          ${tipus ? `<span class="tag">${tipus}</span>` : ''}
+                        </div>
+                        ${notes ? `<div class="notes">${notes}</div>` : ''}
+                      </div>
                     </div>
-                    <div class="info-row">
-                      <span class="badge badge-moon">🌙 ${lluna}</span>
-                      <span class="badge badge-type">🏷️ ${tipus}</span>
-                    </div>
-                    <div class="notes">💡 ${notes}</div>
-                  </div>
-                `;
+                  `;
+                });
+                
+                html += `</div>`;
               });
               
-              html += `</div></div>`;
-            });
+              div.innerHTML = html;
+              
+              div.querySelectorAll('.checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                  toggleTask(this.dataset.taskId, this);
+                });
+              });
+            }
             
-            div.innerHTML = html;
-          }
-          
-          contentDiv.appendChild(div);
+            contentDiv.appendChild(div);
+          });
+
+          updateStats();
+        })
+        .catch(err => {
+          document.getElementById("loading").textContent = "Error carregant les dades";
+          console.error("Error:", err);
         });
-      })
-      .catch(err => {
-        document.getElementById("loading").innerHTML = "❌ Error carregant les dades. Comprova la connexió.";
-        console.error("Error:", err);
-      });
+    }
     
     function openMonth(evt, monthName) {
       const tabcontent = document.getElementsByClassName("tab-content");
@@ -554,7 +558,11 @@ function openMonth(evt, monthName) {
       
       document.getElementById(monthName).style.display = "block";
       evt.currentTarget.classList.add("active");
+
+      updateStats();
     }
+    
+    init();
   </script>
 </body>
 </html>

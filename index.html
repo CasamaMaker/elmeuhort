@@ -3,8 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <title>La meva PWA</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2b2b2b">
 </head>
 <body>
   <h1>Funciona GitHub Pages</h1>
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js');
+  }
+  </script>
 </body>
 </html>

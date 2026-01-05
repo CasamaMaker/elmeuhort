@@ -526,7 +526,7 @@ function openMonth(evt, monthName) {
             if (mesRows.length === 0) {
               div.innerHTML = `<div class="empty-state">No hi ha tasques per aquest mes</div>`;
             } else {
-              const accions = [...new Set(mesRows.map(r => r[1]))];
+              const accions = [...new Set(mesRows.map(r => r[5]))];
               
               let html = `<div class="stats-bar"></div>`;
               

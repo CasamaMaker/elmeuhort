@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="ca">
 <head>
   <meta charset="UTF-8">
@@ -14,5 +14,101 @@
     navigator.serviceWorker.register('./service-worker.js');
   }
   </script>
+</body>
+</html> -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <link rel="manifest" href="manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  <title>el Meu Hort</title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background: #f4f4f4;
+      }
+
+      .tabs {
+          display: flex;
+          flex-wrap: wrap;
+          background: #2c3e50;
+      }
+
+      .tabs button {
+          flex: 1 0 14.28%; /* 12 mesos */
+          padding: 10px;
+          background: #34495e;
+          color: white;
+          border: none;
+          cursor: pointer;
+          transition: background 0.3s;
+      }
+
+      .tabs button:hover {
+          background: #1abc9c;
+      }
+
+      .tabs button.active {
+          background: #1abc9c;
+      }
+
+      .tab-content {
+          padding: 20px;
+          background: white;
+          min-height: 200px;
+      }
+  </style>
+</head>
+<body>
+
+<div class="tabs">
+    <button class="tab-link active" onclick="openMonth(event,'Gener')">Gener</button>
+    <button class="tab-link" onclick="openMonth(event,'Febrer')">Febrer</button>
+    <button class="tab-link" onclick="openMonth(event,'Març')">Març</button>
+    <button class="tab-link" onclick="openMonth(event,'Abril')">Abril</button>
+    <button class="tab-link" onclick="openMonth(event,'Maig')">Maig</button>
+    <button class="tab-link" onclick="openMonth(event,'Juny')">Juny</button>
+    <button class="tab-link" onclick="openMonth(event,'Juliol')">Juliol</button>
+    <button class="tab-link" onclick="openMonth(event,'Agost')">Agost</button>
+    <button class="tab-link" onclick="openMonth(event,'Setembre')">Setembre</button>
+    <button class="tab-link" onclick="openMonth(event,'Octubre')">Octubre</button>
+    <button class="tab-link" onclick="openMonth(event,'Novembre')">Novembre</button>
+    <button class="tab-link" onclick="openMonth(event,'Desembre')">Desembre</button>
+</div>
+
+<div id="Gener" class="tab-content">
+    <h2>Gener</h2>
+    <p>Cultius: Enciams, espinacs, porros</p>
+</div>
+<div id="Febrer" class="tab-content" style="display:none">
+    <h2>Febrer</h2>
+    <p>Cultius: Cols, enciams, raves</p>
+</div>
+<!-- Afegir la resta de mesos igualment -->
+
+<script>
+function openMonth(evt, monthName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tab-link");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+    }
+    document.getElementById(monthName).style.display = "block";
+    evt.currentTarget.classList.add("active");
+}
+</script>
+
 </body>
 </html>

@@ -264,9 +264,8 @@ function openMonth(evt, monthName) {
       border: 1px solid #ddd;
       border-radius: 6px;
       padding: 10px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       display: flex;
-      align-items: center;
       gap: 10px;
     }
 
@@ -286,8 +285,14 @@ function openMonth(evt, monthName) {
     }
 
     .plant-name {
-      font-weight: 500;
+      font-weight: 600;
+      margin-bottom: 6px;
       color: #2c3e50;
+    }
+
+    .info-row {
+      font-size: 0.85em;
+      color: #666;
     }
 
     .loading {
@@ -318,10 +323,7 @@ function openMonth(evt, monthName) {
   const SHEET_NAME = "Full1";
   const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${SHEET_NAME}&tqx=out:json`;
 
-  const mesos = [
-    "Gener","Febrer","Març","Abril","Maig","Juny",
-    "Juliol","Agost","Setembre","Octubre","Novembre","Desembre"
-  ];
+  const mesos = ["Gener","Febrer","Març","Abril","Maig","Juny","Juliol","Agost","Setembre","Octubre","Novembre","Desembre"];
 
   let completedTasks = {};
 
@@ -335,7 +337,7 @@ function openMonth(evt, monthName) {
   }
 
   function getTaskId(mes, planta, accio) {
-    return `${mes}_${accio}_${planta}`.replace(/\s+/g, "_");
+    return `${mes}_${planta}_${accio}`.replace(/\s+/g, "_");
   }
 
   function toggleTask(taskId, checkbox) {
@@ -358,7 +360,7 @@ function openMonth(evt, monthName) {
     const stats = active.querySelector(".stats-bar");
     if (stats) {
       stats.innerHTML = `
-        <span>Total tasques: <strong>${total}</strong></span>
+        <span>Total: <strong>${total}</strong></span>
         <span>Fetes: <strong>${done}</strong> · Pendents: <strong>${total - done}</strong></span>
       `;
     }
@@ -404,7 +406,7 @@ function openMonth(evt, monthName) {
 
           const mesRows = rows.filter(r => r[1] === mes);
           if (mesRows.length === 0) {
-            div.innerHTML = "<div class='loading'>No hi ha tasques aquest mes</div>";
+            div.innerHTML = "<div class='loading'>No hi ha tasques</div>";
             contents.appendChild(div);
             return;
           }
@@ -414,33 +416,29 @@ function openMonth(evt, monthName) {
 
           accions.forEach(accio => {
             html += `<div class="action-header">${accio}</div>`;
+            mesRows.filter(r => r[3] === accio).forEach(r => {
+              const planta = r[0] || "Sense nom";
+              const taskId = getTaskId(mes, planta, accio);
+              const done = completedTasks[taskId];
 
-            mesRows
-              .filter(r => r[3] === accio)
-              .forEach(r => {
-                const planta = r[0] || "Sense nom";
-                const taskId = getTaskId(mes, planta, accio);
-                const done = completedTasks[taskId];
-
-                html += `
-                  <div class="plant-card ${done ? "completed" : ""}">
-                    <input type="checkbox"
-                           class="checkbox"
-                           data-task-id="${taskId}"
-                           ${done ? "checked" : ""}>
+              html += `
+                <div class="plant-card ${done ? "completed" : ""}">
+                  <input type="checkbox" class="checkbox" ${done ? "checked" : ""}
+                         data-task-id="${taskId}">
+                  <div>
                     <div class="plant-name">${planta}</div>
+                    <div class="info-row">${r[7] || ""}</div>
                   </div>
-                `;
-              });
+                </div>
+              `;
+            });
           });
 
           div.innerHTML = html;
           contents.appendChild(div);
 
           div.querySelectorAll(".checkbox").forEach(cb => {
-            cb.addEventListener("change", () =>
-              toggleTask(cb.dataset.taskId, cb)
-            );
+            cb.addEventListener("change", () => toggleTask(cb.dataset.taskId, cb));
           });
         });
 

@@ -501,9 +501,9 @@ function openMonth(evt, monthName) {
                 
                 mesRows.filter(r => r[3] === accio).forEach(r => {
                   const planta = r[0] || "Sense nom";
-                  const lluna = r[2] || "";
-                  const tipus = r[4] || "";
-                  const notes = r[5] || "";
+                  const lluna = r[4] || "";
+                  const tipus = r[6] || "";
+                  const notes = r[7] || "";
                   
                   const taskId = getTaskId(mes, planta, accio);
                   const isCompleted = completedTasks[taskId] || false;

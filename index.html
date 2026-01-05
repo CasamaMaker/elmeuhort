@@ -64,21 +64,37 @@
           background: white;
           min-height: 200px;
       }
+
+      .action-section {
+          margin-top: 15px;
+      }
+
+      .action-section h3 {
+          margin-bottom: 5px;
+          color: #2c3e50;
+      }
+
+      .action-section ul {
+          list-style: none;
+          padding-left: 0;
+      }
+
+      .action-section li {
+          background: #ecf0f1;
+          margin-bottom: 5px;
+          padding: 5px 10px;
+          border-radius: 4px;
+      }
   </style>
 </head>
 <body>
 
-<div class="tabs" id="tabs">
-    <!-- Botons dels mesos es generaran automàticament -->
-</div>
-
-<div id="tab-contents">
-    <!-- Contingut dels mesos es generarà automàticament -->
-</div>
+<div class="tabs" id="tabs"></div>
+<div id="tab-contents"></div>
 
 <script>
 const SHEET_ID = "1VmQdVqhokSYiHTfNNg7z4v4fLPePhAD53za76YBJnhg";
-const SHEET_NAME = "Full1"; // nom de la fulla del Google Sheet
+const SHEET_NAME = "Full1"; // nom de la fulla
 const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${SHEET_NAME}&tq=&tqx=out:json`;
 
 let mesos = ["Gener","Febrer","Març","Abril","Maig","Juny","Juliol","Agost","Setembre","Octubre","Novembre","Desembre"];
@@ -86,11 +102,10 @@ let mesos = ["Gener","Febrer","Març","Abril","Maig","Juny","Juliol","Agost","Se
 fetch(URL)
   .then(res => res.text())
   .then(data => {
-    // El Google Sheets JSON ve envoltat de text
     const json = JSON.parse(data.substring(47, data.length-2));
     const rows = json.table.rows.map(r => r.c.map(c => c ? c.v : ""));
 
-    // Generar els botons dels mesos
+    // Generar botons dels mesos
     const tabsDiv = document.getElementById("tabs");
     mesos.forEach((mes, idx) => {
         const btn = document.createElement("button");
@@ -101,30 +116,39 @@ fetch(URL)
         tabsDiv.appendChild(btn);
     });
 
-    // Generar el contingut dels mesos
+    // Generar contingut dels mesos amb subapartats per acció
     const contentDiv = document.getElementById("tab-contents");
     mesos.forEach((mes, idx) => {
         const div = document.createElement("div");
         div.id = mes;
         div.className = "tab-content";
         if(idx!==0) div.style.display = "none";
-        const cultius = rows.filter(r => r[1] === mes).map(r => r[0]);
-        div.innerHTML = `<h2>${mes}</h2><p>Cultius: ${cultius.join(", ")}</p>`;
+
+        const mesRows = rows.filter(r => r[1] === mes);
+        const accions = [...new Set(mesRows.map(r => r[3]))]; // llista única d'accions
+
+        let html = `<h2>${mes}</h2>`;
+        accions.forEach(accio => {
+            html += `<div class="action-section"><h3>${accio}</h3><ul>`;
+            mesRows.filter(r => r[3] === accio).forEach(r => {
+                html += `<li><strong>${r[0]}</strong> - Lluna: ${r[2]}, Tipus: ${r[4]}, Notes: ${r[5]}</li>`;
+            });
+            html += `</ul></div>`;
+        });
+
+        div.innerHTML = html;
         contentDiv.appendChild(div);
     });
   })
   .catch(err => console.error("Error carregant Google Sheet:", err));
 
 function openMonth(evt, monthName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tab-content");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tab-link");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].classList.remove("active");
-    }
+    const tabcontent = document.getElementsByClassName("tab-content");
+    for (let i = 0; i < tabcontent.length; i++) tabcontent[i].style.display = "none";
+
+    const tablinks = document.getElementsByClassName("tab-link");
+    for (let i = 0; i < tablinks.length; i++) tablinks[i].classList.remove("active");
+
     document.getElementById(monthName).style.display = "block";
     evt.currentTarget.classList.add("active");
 }

@@ -1,6 +1,6 @@
 {
   "name": "La meva PWA",
-  "short_name": "PWA",
+  "short_name": "elMeuHort",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",

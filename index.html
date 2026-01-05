@@ -406,6 +406,40 @@ function openMonth(evt, monthName) {
     
     const mesos = ["Gener","Febrer","Març","Abril","Maig","Juny","Juliol","Agost","Setembre","Octubre","Novembre","Desembre"];
     
+    // Dates de les fases lunars del 2026
+    const fasesLunars2026 = {
+      "Gener": { "plena": 3, "nova": 18, "creixent": 26, "minvant": 10 },
+      "Febrer": { "plena": 1, "nova": 17, "creixent": 25, "minvant": 8 },
+      "Març": { "plena": 3, "nova": 18, "creixent": 26, "minvant": 10 },
+      "Abril": { "plena": 2, "nova": 17, "creixent": 25, "minvant": 9 },
+      "Maig": { "plena": 1, "plena2": 31, "nova": 16, "creixent": 24, "minvant": 8 },
+      "Juny": { "plena": 30, "nova": 14, "creixent": 22, "minvant": 6 },
+      "Juliol": { "plena": 29, "nova": 14, "creixent": 22, "minvant": 6 },
+      "Agost": { "plena": 28, "nova": 12, "creixent": 20, "minvant": 4 },
+      "Setembre": { "plena": 26, "nova": 11, "creixent": 18, "minvant": 3 },
+      "Octubre": { "plena": 26, "nova": 10, "creixent": 17, "minvant": 2 },
+      "Novembre": { "plena": 24, "nova": 9, "creixent": 16, "minvant": 1 },
+      "Desembre": { "plena": 24, "nova": 8, "creixent": 16, "minvant": 1 }
+    };
+    
+    function getLunarPhaseDay(mes, lluna) {
+      if (!lluna || !fasesLunars2026[mes]) return "";
+      
+      const llunaLower = lluna.toLowerCase();
+      
+      if (llunaLower.includes("plena")) {
+        return fasesLunars2026[mes].plena;
+      } else if (llunaLower.includes("nova")) {
+        return fasesLunars2026[mes].nova;
+      } else if (llunaLower.includes("creixent")) {
+        return fasesLunars2026[mes].creixent;
+      } else if (llunaLower.includes("minvant")) {
+        return fasesLunars2026[mes].minvant;
+      }
+      
+      return "";
+    }
+    
     let completedTasks = {};
     
     async function loadCompletedTasks() {
@@ -508,6 +542,10 @@ function openMonth(evt, monthName) {
                   const taskId = getTaskId(mes, planta, accio);
                   const isCompleted = completedTasks[taskId] || false;
                   
+                  // Obtenir el dia de la fase lunar
+                  const diaLlunar = getLunarPhaseDay(mes, lluna);
+                  const llunaText = diaLlunar ? `${lluna} (dia ${diaLlunar})` : lluna;
+                  
                   html += `
                     <div class="plant-card ${isCompleted ? 'completed' : ''}">
                       <div class="checkbox-container">
@@ -518,7 +556,7 @@ function openMonth(evt, monthName) {
                       <div class="plant-info">
                         <div class="plant-name">${planta}</div>
                         <div class="info-row">
-                          ${lluna ? `<div class="info-item"><span class="info-label">Lluna:</span> <span>${lluna}</span></div>` : ''}
+                          ${lluna ? `<div class="info-item"><span class="info-label">Lluna:</span> <span>${llunaText}</span></div>` : ''}
                           ${tipus ? `<div class="info-item"><span class="info-label">Tipus plantació:</span> <span>${tipus}</span></div>` : ''}
                           ${notes ? `<div class="info-item"><span class="info-label">Notes:</span> <span>${notes}</span></div>` : ''}
                         </div>

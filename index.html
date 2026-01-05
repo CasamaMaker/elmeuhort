@@ -177,277 +177,435 @@ function openMonth(evt, monthName) {
 
 
 
+
 <!DOCTYPE html>
 <html lang="ca">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>el Meu Hort</title>
-
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #f5f5f5;
       color: #333;
     }
-
+    
     .header {
       background: white;
       padding: 16px 20px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      margin-bottom: 1px;
     }
-
+    
     .header h1 {
-      font-size: 1.4em;
+      font-size: 1.5em;
       font-weight: 600;
       color: #2c3e50;
     }
-
+    
     .tabs-container {
       background: white;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
       overflow-x: auto;
+      margin-bottom: 1px;
     }
-
+    
     .tabs {
       display: flex;
-      gap: 8px;
       padding: 8px 12px;
+      gap: 8px;
+      min-width: min-content;
     }
-
+    
     .tabs button {
       padding: 8px 16px;
-      border-radius: 6px;
-      border: 1px solid #ddd;
       background: #f8f9fa;
+      color: #666;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 0.9em;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.2s;
     }
-
+    
+    .tabs button:hover {
+      background: #e9ecef;
+      border-color: #999;
+    }
+    
     .tabs button.active {
       background: #2c3e50;
       color: white;
       border-color: #2c3e50;
     }
-
+    
     .content-container {
       padding: 16px;
     }
-
-    .tab-content { display: none; }
-
-    .stats-bar {
-      background: white;
-      padding: 10px 14px;
-      margin-bottom: 16px;
-      border-radius: 6px;
-      font-size: 0.85em;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-      display: flex;
-      justify-content: space-between;
+    
+    .tab-content {
+      display: none;
     }
-
+    
+    .action-section {
+      margin-bottom: 24px;
+    }
+    
     .action-header {
-      background: white;
-      padding: 10px 12px;
-      margin-bottom: 8px;
-      border-left: 4px solid #2c3e50;
+      font-size: 1.1em;
       font-weight: 600;
       color: #2c3e50;
+      margin-bottom: 12px;
+      padding: 10px 12px;
+      background: white;
+      border-left: 4px solid #2c3e50;
       box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
-
+    
     .plant-card {
       background: white;
-      border: 1px solid #ddd;
+      border: 1px solid #e0e0e0;
       border-radius: 6px;
-      padding: 10px;
+      padding: 12px;
       margin-bottom: 8px;
       display: flex;
-      gap: 10px;
+      align-items: flex-start;
+      gap: 12px;
+      transition: box-shadow 0.2s;
     }
-
+    
+    .plant-card:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    
     .plant-card.completed {
       opacity: 0.6;
-      background: #f1f1f1;
+      background: #f8f9fa;
     }
-
+    
     .plant-card.completed .plant-name {
       text-decoration: line-through;
+      color: #999;
     }
-
+    
+    .checkbox-container {
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+    
     .checkbox {
       width: 20px;
       height: 20px;
       cursor: pointer;
+      accent-color: #2c3e50;
     }
-
+    
+    .plant-info {
+      flex: 1;
+      min-width: 0;
+    }
+    
     .plant-name {
       font-weight: 600;
-      margin-bottom: 6px;
+      font-size: 0.95em;
       color: #2c3e50;
+      margin-bottom: 8px;
     }
-
+    
     .info-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
       font-size: 0.85em;
       color: #666;
     }
+    
+    .info-item {
+      display: flex;
+      gap: 4px;
+    }
 
+    .info-label {
+      font-weight: 500;
+      color: #555;
+    }
+    
     .loading {
       text-align: center;
       padding: 40px;
       color: #999;
     }
+    
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+      background: white;
+      border-radius: 6px;
+    }
+
+    .stats-bar {
+      background: white;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85em;
+      color: #666;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .stats-bar strong {
+      color: #2c3e50;
+    }
+    
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 1.3em;
+      }
+      
+      .content-container {
+        padding: 12px;
+      }
+      
+      .plant-card {
+        padding: 10px;
+      }
+    }
   </style>
 </head>
-
 <body>
+  <div class="header">
+    <h1>el Meu Hort</h1>
+  </div>
+  
+  <div class="tabs-container">
+    <div class="tabs" id="tabs"></div>
+  </div>
+  
+  <div class="content-container">
+    <div class="loading" id="loading">Carregant...</div>
+    <div id="tab-contents"></div>
+  </div>
 
-<div class="header">
-  <h1>el Meu Hort</h1>
-</div>
-
-<div class="tabs-container">
-  <div class="tabs" id="tabs"></div>
-</div>
-
-<div class="content-container">
-  <div id="loading" class="loading">Carregant...</div>
-  <div id="tab-contents"></div>
-</div>
-
-<script>
-  const SHEET_ID = "1VmQdVqhokSYiHTfNNg7z4v4fLPePhAD53za76YBJnhg";
-  const SHEET_NAME = "Full1";
-  const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${SHEET_NAME}&tqx=out:json`;
-
-  const mesos = ["Gener","Febrer","Març","Abril","Maig","Juny","Juliol","Agost","Setembre","Octubre","Novembre","Desembre"];
-
-  let completedTasks = {};
-
-  function loadCompletedTasks() {
-    const data = localStorage.getItem("hort-completed-tasks");
-    completedTasks = data ? JSON.parse(data) : {};
-  }
-
-  function saveCompletedTasks() {
-    localStorage.setItem("hort-completed-tasks", JSON.stringify(completedTasks));
-  }
-
-  function getTaskId(mes, planta, accio) {
-    return `${mes}_${planta}_${accio}`.replace(/\s+/g, "_");
-  }
-
-  function toggleTask(taskId, checkbox) {
-    completedTasks[taskId] = checkbox.checked;
-    saveCompletedTasks();
-
-    const card = checkbox.closest(".plant-card");
-    card.classList.toggle("completed", checkbox.checked);
-
-    updateStats();
-  }
-
-  function updateStats() {
-    const active = document.querySelector(".tab-content[style*='block']");
-    if (!active) return;
-
-    const total = active.querySelectorAll(".plant-card").length;
-    const done = active.querySelectorAll(".plant-card.completed").length;
-
-    const stats = active.querySelector(".stats-bar");
-    if (stats) {
-      stats.innerHTML = `
-        <span>Total: <strong>${total}</strong></span>
-        <span>Fetes: <strong>${done}</strong> · Pendents: <strong>${total - done}</strong></span>
-      `;
+  <script>
+    const SHEET_ID = "1VmQdVqhokSYiHTfNNg7z4v4fLPePhAD53za76YBJnhg";
+    const SHEET_NAME = "Full1";
+    const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${SHEET_NAME}&tqx=out:json`;
+    
+    const mesos = ["Gener","Febrer","Març","Abril","Maig","Juny","Juliol","Agost","Setembre","Octubre","Novembre","Desembre"];
+    
+    // Dates de les fases lunars del 2026
+    const fasesLunars2026 = {
+      "Gener": { "plena": 3, "nova": 18, "creixent": 26, "minvant": 10 },
+      "Febrer": { "plena": 1, "nova": 17, "creixent": 25, "minvant": 8 },
+      "Març": { "plena": 3, "nova": 18, "creixent": 26, "minvant": 10 },
+      "Abril": { "plena": 2, "nova": 17, "creixent": 25, "minvant": 9 },
+      "Maig": { "plena": 1, "plena2": 31, "nova": 16, "creixent": 24, "minvant": 8 },
+      "Juny": { "plena": 30, "nova": 14, "creixent": 22, "minvant": 6 },
+      "Juliol": { "plena": 29, "nova": 14, "creixent": 22, "minvant": 6 },
+      "Agost": { "plena": 28, "nova": 12, "creixent": 20, "minvant": 4 },
+      "Setembre": { "plena": 26, "nova": 11, "creixent": 18, "minvant": 3 },
+      "Octubre": { "plena": 26, "nova": 10, "creixent": 17, "minvant": 2 },
+      "Novembre": { "plena": 24, "nova": 9, "creixent": 16, "minvant": 1 },
+      "Desembre": { "plena": 24, "nova": 8, "creixent": 16, "minvant": 1 }
+    };
+    
+    function getLunarPhaseDay(mes, lluna) {
+      if (!lluna || !fasesLunars2026[mes]) return "";
+      
+      const llunaLower = lluna.toLowerCase();
+      
+      if (llunaLower.includes("plena")) {
+        return fasesLunars2026[mes].plena;
+      } else if (llunaLower.includes("nova")) {
+        return fasesLunars2026[mes].nova;
+      } else if (llunaLower.includes("creixent")) {
+        return fasesLunars2026[mes].creixent;
+      } else if (llunaLower.includes("minvant")) {
+        return fasesLunars2026[mes].minvant;
+      }
+      
+      return "";
     }
-  }
+    
+    let completedTasks = {};
+    
+    async function loadCompletedTasks() {
+      try {
+        const result = await window.storage.get('hort-completed-tasks');
+        completedTasks = result ? JSON.parse(result.value) : {};
+      } catch (e) {
+        completedTasks = {};
+      }
+    }
+    
+    async function saveCompletedTasks() {
+      try {
+        await window.storage.set('hort-completed-tasks', JSON.stringify(completedTasks));
+      } catch (e) {
+        console.error('Error guardant tasques:', e);
+      }
+    }
+    
+    function getTaskId(mes, planta, accio) {
+      return `${mes}_${planta}_${accio}`.replace(/\s/g, '_');
+    }
+    
+    function toggleTask(taskId, checkbox) {
+      completedTasks[taskId] = checkbox.checked;
+      saveCompletedTasks();
+      
+      const card = checkbox.closest('.plant-card');
+      if (checkbox.checked) {
+        card.classList.add('completed');
+      } else {
+        card.classList.remove('completed');
+      }
+      
+      updateStats();
+    }
 
-  function openMonth(evt, mes) {
-    document.querySelectorAll(".tab-content").forEach(d => d.style.display = "none");
-    document.querySelectorAll(".tab-link").forEach(b => b.classList.remove("active"));
+    function updateStats() {
+      const activeMonth = document.querySelector('.tab-content[style*="display: block"]');
+      if (!activeMonth) return;
 
-    document.getElementById(mes).style.display = "block";
-    evt.currentTarget.classList.add("active");
-
-    updateStats();
-  }
-
-  function init() {
-    loadCompletedTasks();
-
-    fetch(URL)
-      .then(r => r.text())
-      .then(data => {
-        const json = JSON.parse(data.substring(47, data.length - 2));
-        const rows = json.table.rows.map(r => r.c.map(c => c ? c.v : ""));
-
-        document.getElementById("loading").style.display = "none";
-
-        const tabs = document.getElementById("tabs");
-        mesos.forEach((mes, i) => {
-          const b = document.createElement("button");
-          b.textContent = mes;
-          b.className = "tab-link" + (i === 0 ? " active" : "");
-          b.onclick = e => openMonth(e, mes);
-          tabs.appendChild(b);
-        });
-
-        const contents = document.getElementById("tab-contents");
-
-        mesos.forEach((mes, i) => {
-          const div = document.createElement("div");
-          div.id = mes;
-          div.className = "tab-content";
-          if (i === 0) div.style.display = "block";
-
-          const mesRows = rows.filter(r => r[1] === mes);
-          if (mesRows.length === 0) {
-            div.innerHTML = "<div class='loading'>No hi ha tasques</div>";
-            contents.appendChild(div);
-            return;
-          }
-
-          const accions = [...new Set(mesRows.map(r => r[3]))];
-          let html = `<div class="stats-bar"></div>`;
-
-          accions.forEach(accio => {
-            html += `<div class="action-header">${accio}</div>`;
-            mesRows.filter(r => r[3] === accio).forEach(r => {
-              const planta = r[0] || "Sense nom";
-              const taskId = getTaskId(mes, planta, accio);
-              const done = completedTasks[taskId];
-
-              html += `
-                <div class="plant-card ${done ? "completed" : ""}">
-                  <input type="checkbox" class="checkbox" ${done ? "checked" : ""}
-                         data-task-id="${taskId}">
-                  <div>
-                    <div class="plant-name">${planta}</div>
-                    <div class="info-row">${r[7] || ""}</div>
-                  </div>
-                </div>
-              `;
-            });
+      const totalTasks = activeMonth.querySelectorAll('.plant-card').length;
+      const completedCount = activeMonth.querySelectorAll('.plant-card.completed').length;
+      
+      const statsBar = activeMonth.querySelector('.stats-bar');
+      if (statsBar) {
+        statsBar.innerHTML = `
+          <span>Total tasques: <strong>${totalTasks}</strong></span>
+          <span>Fetes: <strong>${completedCount}</strong> / Pendents: <strong>${totalTasks - completedCount}</strong></span>
+        `;
+      }
+    }
+    
+    async function init() {
+      await loadCompletedTasks();
+      
+      fetch(URL)
+        .then(res => res.text())
+        .then(data => {
+          const json = JSON.parse(data.substring(47, data.length - 2));
+          const rows = json.table.rows.map(r => r.c.map(c => c ? c.v : ""));
+          
+          document.getElementById("loading").style.display = "none";
+          
+          const tabsDiv = document.getElementById("tabs");
+          mesos.forEach((mes, idx) => {
+            const btn = document.createElement("button");
+            btn.className = "tab-link";
+            if (idx === 0) btn.classList.add("active");
+            btn.textContent = mes;
+            btn.onclick = (e) => openMonth(e, mes);
+            tabsDiv.appendChild(btn);
+          });
+          
+          const contentDiv = document.getElementById("tab-contents");
+          mesos.forEach((mes, idx) => {
+            const div = document.createElement("div");
+            div.id = mes;
+            div.className = "tab-content";
+            if (idx === 0) div.style.display = "block";
+            
+            const mesRows = rows.filter(r => r[1] === mes);
+            
+            if (mesRows.length === 0) {
+              div.innerHTML = `<div class="empty-state">No hi ha tasques per aquest mes</div>`;
+            } else {
+              const accions = [...new Set(mesRows.map(r => r[3]))];
+              
+              let html = `<div class="stats-bar"></div>`;
+              
+              accions.forEach(accio => {
+                html += `<div class="action-section"><div class="action-header">${accio}</div>`;
+                
+                mesRows.filter(r => r[3] === accio).forEach(r => {
+                  const planta = r[0] || "Sense nom";
+                  const lluna = r[4] || "";
+                  const tipus = r[6] || "";
+                  const notes = r[7] || "";
+                  
+                  const taskId = getTaskId(mes, planta, accio);
+                  const isCompleted = completedTasks[taskId] || false;
+                  
+                  // Obtenir el dia de la fase lunar
+                  const diaLlunar = getLunarPhaseDay(mes, lluna);
+                  const llunaText = diaLlunar ? `${lluna} (dia ${diaLlunar})` : lluna;
+                  
+                  html += `
+                    <div class="plant-card ${isCompleted ? 'completed' : ''}">
+                      <div class="checkbox-container">
+                        <input type="checkbox" class="checkbox" 
+                               data-task-id="${taskId}"
+                               ${isCompleted ? 'checked' : ''}>
+                      </div>
+                      <div class="plant-info">
+                        <div class="plant-name">${planta}</div>
+                        <div class="info-row">
+                          ${lluna ? `<div class="info-item"><span class="info-label">Lluna:</span> <span>${llunaText}</span></div>` : ''}
+                          ${tipus ? `<div class="info-item"><span class="info-label">Tipus plantació:</span> <span>${tipus}</span></div>` : ''}
+                          ${notes ? `<div class="info-item"><span class="info-label">Notes:</span> <span>${notes}</span></div>` : ''}
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                });
+                
+                html += `</div>`;
+              });
+              
+              div.innerHTML = html;
+              
+              div.querySelectorAll('.checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                  toggleTask(this.dataset.taskId, this);
+                });
+              });
+            }
+            
+            contentDiv.appendChild(div);
           });
 
-          div.innerHTML = html;
-          contents.appendChild(div);
-
-          div.querySelectorAll(".checkbox").forEach(cb => {
-            cb.addEventListener("change", () => toggleTask(cb.dataset.taskId, cb));
-          });
+          updateStats();
+        })
+        .catch(err => {
+          document.getElementById("loading").textContent = "Error carregant les dades";
+          console.error("Error:", err);
         });
+    }
+    
+    function openMonth(evt, monthName) {
+      const tabcontent = document.getElementsByClassName("tab-content");
+      for (let i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      
+      const tablinks = document.getElementsByClassName("tab-link");
+      for (let i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+      }
+      
+      document.getElementById(monthName).style.display = "block";
+      evt.currentTarget.classList.add("active");
 
-        updateStats();
-      });
-  }
-
-  init();
-</script>
-
+      updateStats();
+    }
+    
+    init();
+  </script>
 </body>
 </html>

@@ -207,7 +207,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>el Meu Hort 43</h1>
+    <h1>el Meu Hort 44</h1>
   </div>
   
   <div class="tabs-container">
@@ -327,29 +327,11 @@
     }
     
     let completedTasks = {};
-    
-    // async function loadCompletedTasks() {
-    //   try {
-    //     const result = await window.storage.get('hort-completed-tasks');
-    //     completedTasks = result ? JSON.parse(result.value) : {};
-    //   } catch (e) {
-    //     completedTasks = {};
-    //   }
-    // }
-
+  
     function loadCompletedTasks() {
       const data = localStorage.getItem('hort-completed-tasks');
       completedTasks = data ? JSON.parse(data) : {};
     }
-
-    
-    // async function saveCompletedTasks() {
-    //   try {
-    //     await window.storage.set('hort-completed-tasks', JSON.stringify(completedTasks));
-    //   } catch (e) {
-    //     console.error('Error guardant tasques:', e);
-    //   }
-    // }
 
     function saveCompletedTasks() {
       localStorage.setItem(
@@ -358,7 +340,6 @@
       );
     }
 
-    
     function getTaskId(mes, planta, accio) {
       return `${mes}_${planta}_${accio}`.replace(/\s/g, '_');
     }
@@ -419,8 +400,12 @@
             const btn = document.createElement("button");
             btn.className = "tab-link";
 
+            //calcula el mes actual
+            const mesActual = new Date().getMonth(); // 0 = Gener, 11 = Desembre
+
             //El primer mes queda actiu per defecte
-            if (idx === 0) btn.classList.add("active");
+            // if (idx === 0) btn.classList.add("active");
+            if (idx === mesActual) btn.classList.add("active");
             btn.textContent = mes;
 
             //En clicar, es mostra el contingut del mes corresponent.

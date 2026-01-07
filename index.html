@@ -737,7 +737,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>el Meu Hort 51</h1>
+    <h1>el Meu Hort 52</h1>
   </div>
   
   <div class="tabs-container">
@@ -812,11 +812,26 @@
       const any = 2026; // Any actual
       
       // Buscar el primer dia del mes on coincideix la fase
+      // for (let dia = 1; dia <= 31; dia++) {
+      //   const data = new Date(any, mesIndex, dia);
+        
+      //   // Comprovar que el dia està dins del mes
+      //   if (data.getMonth() !== mesIndex) break;
+        
+      //   const faseActual = faseLunar(data);
+        
+      //   if (faseActual === faseDesitjada) {
+      //     if (diaInici === null) diaInici = dia;
+      //     diaFi = dia;
+      //   } else if (diaInici !== null) {
+      //     break; // ja hem sortit del rang
+      //   }
+      // }
+
       for (let dia = 1; dia <= 31; dia++) {
         const data = new Date(any, mesIndex, dia);
         
-        // Comprovar que el dia està dins del mes
-        if (data.getMonth() !== mesIndex) break;
+        if (data.getMonth() > mesIndex) break; // si hem passat al mes següent, sortir
         
         const faseActual = faseLunar(data);
         
@@ -828,8 +843,14 @@
         }
       }
 
+
       if (diaInici === null) return null;
-      return { inici: diaInici, fi: diaFi };
+      // return { inici: diaInici, fi: diaFi };
+      // Retornem amb el mes també
+      return { 
+        inici: { mes: mesos[mesIndex], dia: diaInici }, 
+        fi: { mes: mesos[data.getMonth()], dia: diaFi } 
+      };
       
       return "";
     }

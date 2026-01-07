@@ -423,7 +423,7 @@
             if (idx === 0) div.style.display = "block";
             
             //Filtrar files del mes
-            const mesRows = rows.filter(r => mes_col === mes);
+            const mesRows = rows.filter(r => r[mes_col] === mes);
             
             //Cas sense tasques
             if (mesRows.length === 0) {
@@ -431,7 +431,7 @@
             } else {
 
               //Agrupar per accions (Plantar, Podar, Collir…)       r[3] → columna “Acció”;    Set elimina duplicats.
-              const accions = [...new Set(mesRows.map(r => accio_col))];
+              const accions = [...new Set(mesRows.map(r => r[accio_col]).filter(a => a))];
               
               //Barra d’estadístiques
               let html = `<div class="stats-bar"></div>`;
@@ -441,7 +441,7 @@
                 html += `<div class="action-section"><div class="action-header">${accio}</div>`;
                 
                 //Generació de cada tasca (plant-card)
-                mesRows.filter(r => final_col === accio).forEach(r => {
+                mesRows.filter(r => r[accio_col] === accio).forEach(r => {
                   // const planta = planta_col || "Sense nom";
                   // const lluna = lluna_col || "";
                   // const tipus = tipus_col || "";

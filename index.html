@@ -207,7 +207,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>el Meu Hort 38</h1>
+    <h1>el Meu Hort 39</h1>
   </div>
   
   <div class="tabs-container">
@@ -384,7 +384,8 @@
       await loadCompletedTasks();
       
       //Petició de dades (Google Sheets publicat)
-      fetch(URL)
+      // fetch(URL)
+      fetch(URL + "&t=" + Date.now())
         .then(res => res.text())
         .then(data => {
           //Neteja i parseig del JSON

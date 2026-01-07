@@ -207,7 +207,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>el Meu Hort 44</h1>
+    <h1>el Meu Hort 45</h1>
   </div>
   
   <div class="tabs-container">
@@ -359,19 +359,19 @@
     }
 
     function updateStats() {
-      const activeMonth = document.querySelector('.tab-content[style*="display: block"]');
-      if (!activeMonth) return;
+      // const activeMonth = document.querySelector('.tab-content[style*="display: block"]');
+      // if (!activeMonth) return;
 
-      const totalTasks = activeMonth.querySelectorAll('.plant-card').length;
-      const completedCount = activeMonth.querySelectorAll('.plant-card.completed').length;
+      // const totalTasks = activeMonth.querySelectorAll('.plant-card').length;
+      // const completedCount = activeMonth.querySelectorAll('.plant-card.completed').length;
       
-      const statsBar = activeMonth.querySelector('.stats-bar');
-      if (statsBar) {
-        statsBar.innerHTML = `
-          <span>Total tasques: <strong>${totalTasks}</strong></span>
-          <span>Fetes: <strong>${completedCount}</strong> / Pendents: <strong>${totalTasks - completedCount}</strong></span>
-        `;
-      }
+      // const statsBar = activeMonth.querySelector('.stats-bar');
+      // if (statsBar) {
+      //   statsBar.innerHTML = `
+      //     <span>Total tasques: <strong>${totalTasks}</strong></span>
+      //     <span>Fetes: <strong>${completedCount}</strong> / Pendents: <strong>${totalTasks - completedCount}</strong></span>
+      //   `;
+      // }
     }
     
     async function init() {

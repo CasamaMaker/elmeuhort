@@ -737,7 +737,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>el Meu Hort 52</h1>
+    <h1>el Meu Hort 53</h1>
   </div>
   
   <div class="tabs-container">
@@ -828,9 +828,11 @@
       //   }
       // }
 
+      let mesFiIndex = mesIndex; // inicialment igual que mesIndex
+
       for (let dia = 1; dia <= 31; dia++) {
         const data = new Date(any, mesIndex, dia);
-        
+
         if (data.getMonth() > mesIndex) break; // si hem passat al mes següent, sortir
         
         const faseActual = faseLunar(data);
@@ -838,18 +840,17 @@
         if (faseActual === faseDesitjada) {
           if (diaInici === null) diaInici = dia;
           diaFi = dia;
+          mesFiIndex = data.getMonth(); // guardar el mes del dia final
         } else if (diaInici !== null) {
           break; // ja hem sortit del rang
         }
       }
 
-
       if (diaInici === null) return null;
-      // return { inici: diaInici, fi: diaFi };
-      // Retornem amb el mes també
+
       return { 
         inici: { mes: mesos[mesIndex], dia: diaInici }, 
-        fi: { mes: mesos[data.getMonth()], dia: diaFi } 
+        fi: { mes: mesos[mesFiIndex], dia: diaFi } 
       };
       
       return "";

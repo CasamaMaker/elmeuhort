@@ -207,7 +207,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>el Meu Hort 35</h1>
+    <h1>el Meu Hort 36</h1>
   </div>
   
   <div class="tabs-container">
@@ -227,14 +227,14 @@
     const mesos = ["Gener","Febrer","Març","Abril","Maig","Juny","Juliol","Agost","Setembre","Octubre","Novembre","Desembre"];
     
     //Columnes
-    const planta_col = r[0] || "Sense nom";
-    const mes_col = r[1] || "";
-    const inici_col = r[2] || "";
-    const final_col = r[3] || "";
-    const lluna_col = r[4] || "";
-    const accio_col = r[5] || "";
-    const tipus_col = r[6] || "";
-    const notes_col = r[7] || "";
+    const planta_col = 0;
+    const mes_col = 1;
+    const inici_col = 2;
+    const final_col = 3;
+    const lluna_col = 4;
+    const accio_col = 5;
+    const tipus_col = 6;
+    const notes_col = 7;
 
 
     // // Dates de les fases lunars del 2026
@@ -379,183 +379,86 @@
       }
     }
     
-    // async function init() {
-    //   //Carregar tasques completades
-    //   await loadCompletedTasks();
-      
-    //   //Petició de dades (Google Sheets publicat)
-    //   fetch(URL)
-    //     .then(res => res.text())
-    //     .then(data => {
-    //       //Neteja i parseig del JSON
-    //       const json = JSON.parse(data.substring(47, data.length - 2));
-    //       //Extracció de files de dades
-    //       const rows = json.table.rows.map(r => r.c.map(c => c ? c.v : ""));
-          
-    //       //Amagar el missatge de càrrega
-    //       document.getElementById("loading").style.display = "none";
-          
-    //       //Creació de les pestanyes (mesos)
-    //       const tabsDiv = document.getElementById("tabs");
-
-    //       //crea un botó per cada mes
-    //       mesos.forEach((mes, idx) => {
-    //         const btn = document.createElement("button");
-    //         btn.className = "tab-link";
-
-    //         //El primer mes queda actiu per defecte
-    //         if (idx === 0) btn.classList.add("active");
-    //         btn.textContent = mes;
-
-    //         //En clicar, es mostra el contingut del mes corresponent.
-    //         btn.onclick = (e) => openMonth(e, mes);
-    //         tabsDiv.appendChild(btn);
-    //       });
-          
-    //       //Creació del contingut de cada mes
-    //       const contentDiv = document.getElementById("tab-contents");
-    //       mesos.forEach((mes, idx) => {
-            
-    //         //Div per cada mes
-    //         const div = document.createElement("div");
-    //         div.id = mes;
-    //         div.className = "tab-content";
-    //         if (idx === 0) div.style.display = "block";
-            
-    //         //Filtrar files del mes
-    //         const mesRows = rows.filter(r => r[mes_col] === mes);
-            
-    //         //Cas sense tasques
-    //         if (mesRows.length === 0) {
-    //           div.innerHTML = `<div class="empty-state">No hi ha tasques per aquest mes</div>`;
-    //         } else {
-
-    //           //Agrupar per accions (Plantar, Podar, Collir…)       r[3] → columna “Acció”;    Set elimina duplicats.
-    //           const accions = [...new Set(mesRows.map(r => r[accio_col]).filter(a => a))];
-              
-    //           //Barra d’estadístiques
-    //           let html = `<div class="stats-bar"></div>`;
-              
-    //           //Generació de seccions per acció ------> no funciona
-    //           accions.forEach(accio => {
-    //             html += `<div class="action-section"><div class="action-header">${accio}</div>`;
-                
-    //             //Generació de cada tasca (plant-card)
-    //             mesRows.filter(r => r[accio_col] === accio).forEach(r => {
-    //               // const planta = planta_col || "Sense nom";
-    //               // const lluna = lluna_col || "";
-    //               // const tipus = tipus_col || "";
-    //               // const notes = notes_col || "";
-                  
-    //               //Identificador únic de tasca
-    //               const taskId = getTaskId(mes, planta, accio);
-
-    //               //Estat completat
-    //               const isCompleted = completedTasks[taskId] || false;
-                  
-    //               // Obtenir el dia de la fase lunar
-    //               const diaLlunar = getLunarPhaseDay(mes, lluna);
-    //               const llunaText = diaLlunar ? `${lluna} (dia ${diaLlunar})` : lluna;
-                  
-
-    //               //HTML final de la targeta
-    //               html += `
-    //                 <div class="plant-card ${isCompleted ? 'completed' : ''}">
-    //                   <div class="checkbox-container">
-    //                     <input type="checkbox" class="checkbox" 
-    //                            data-task-id="${taskId}"
-    //                            ${isCompleted ? 'checked' : ''}>
-    //                   </div>
-    //                   <div class="plant-info">
-    //                     <div class="plant-name">${planta}</div>
-    //                     <div class="info-row">
-    //                       ${lluna ? `<div class="info-item"><span class="info-label">Lluna:</span> <span>${llunaText}</span></div>` : ''}
-    //                       ${tipus ? `<div class="info-item"><span class="info-label">Tipus plantació:</span> <span>${tipus}</span></div>` : ''}
-    //                       ${notes ? `<div class="info-item"><span class="info-label">Notes:</span> <span>${notes}</span></div>` : ''}
-    //                     </div>
-    //                   </div>
-    //                 </div>
-    //               `;
-    //             });
-                
-    //             html += `</div>`;
-    //           });
-              
-    //           div.innerHTML = html;
-              
-    //           //Activar els checkboxes
-    //           div.querySelectorAll('.checkbox').forEach(checkbox => {
-    //             checkbox.addEventListener('change', function() {
-    //               toggleTask(this.dataset.taskId, this);
-    //             });
-    //           });
-    //         }
-    //         //Afegir el mes al DOM
-    //         contentDiv.appendChild(div);
-    //       });
-    //       //Actualitzar estadístiques globals
-    //       updateStats();
-    //     })
-    //     //Gestió d’errors
-    //     .catch(err => {
-    //       document.getElementById("loading").textContent = "Error carregant les dades";
-    //       console.error("Error:", err);
-    //     });
-    // }
-   
     async function init() {
+      //Carregar tasques completades
       await loadCompletedTasks();
       
+      //Petició de dades (Google Sheets publicat)
       fetch(URL)
         .then(res => res.text())
         .then(data => {
+          //Neteja i parseig del JSON
           const json = JSON.parse(data.substring(47, data.length - 2));
+          //Extracció de files de dades
           const rows = json.table.rows.map(r => r.c.map(c => c ? c.v : ""));
           
+          //Amagar el missatge de càrrega
           document.getElementById("loading").style.display = "none";
           
+          //Creació de les pestanyes (mesos)
           const tabsDiv = document.getElementById("tabs");
+
+          //crea un botó per cada mes
           mesos.forEach((mes, idx) => {
             const btn = document.createElement("button");
             btn.className = "tab-link";
+
+            //El primer mes queda actiu per defecte
             if (idx === 0) btn.classList.add("active");
             btn.textContent = mes;
+
+            //En clicar, es mostra el contingut del mes corresponent.
             btn.onclick = (e) => openMonth(e, mes);
             tabsDiv.appendChild(btn);
           });
           
+          //Creació del contingut de cada mes
           const contentDiv = document.getElementById("tab-contents");
           mesos.forEach((mes, idx) => {
+            
+            //Div per cada mes
             const div = document.createElement("div");
             div.id = mes;
             div.className = "tab-content";
             if (idx === 0) div.style.display = "block";
             
-            const mesRows = rows.filter(r => r[1] === mes);
+            //Filtrar files del mes
+            const mesRows = rows.filter(r => r[mes_col] === mes);
             
+            //Cas sense tasques
             if (mesRows.length === 0) {
               div.innerHTML = `<div class="empty-state">No hi ha tasques per aquest mes</div>`;
             } else {
-              const accions = [...new Set(mesRows.map(r => r[3]))];
+
+              //Agrupar per accions (Plantar, Podar, Collir…)       r[3] → columna “Acció”;    Set elimina duplicats.
+              const accions = [...new Set(mesRows.map(r => r[accio_col]).filter(a => a))];
               
+              //Barra d’estadístiques
               let html = `<div class="stats-bar"></div>`;
               
+              //Generació de seccions per acció ------> no funciona
               accions.forEach(accio => {
                 html += `<div class="action-section"><div class="action-header">${accio}</div>`;
                 
-                mesRows.filter(r => r[3] === accio).forEach(r => {
-                  const planta = r[0] || "Sense nom";
-                  const lluna = r[4] || "";
-                  const tipus = r[6] || "";
-                  const notes = r[7] || "";
+                //Generació de cada tasca (plant-card)
+                mesRows.filter(r => r[accio_col] === accio).forEach(r => {
+                  // const planta = planta_col || "Sense nom";
+                  // const lluna = lluna_col || "";
+                  // const tipus = tipus_col || "";
+                  // const notes = notes_col || "";
                   
+                  //Identificador únic de tasca
                   const taskId = getTaskId(mes, planta, accio);
+
+                  //Estat completat
                   const isCompleted = completedTasks[taskId] || false;
                   
                   // Obtenir el dia de la fase lunar
                   const diaLlunar = getLunarPhaseDay(mes, lluna);
                   const llunaText = diaLlunar ? `${lluna} (dia ${diaLlunar})` : lluna;
                   
+
+                  //HTML final de la targeta
                   html += `
                     <div class="plant-card ${isCompleted ? 'completed' : ''}">
                       <div class="checkbox-container">
@@ -580,23 +483,120 @@
               
               div.innerHTML = html;
               
+              //Activar els checkboxes
               div.querySelectorAll('.checkbox').forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
                   toggleTask(this.dataset.taskId, this);
                 });
               });
             }
-            
+            //Afegir el mes al DOM
             contentDiv.appendChild(div);
           });
-
+          //Actualitzar estadístiques globals
           updateStats();
         })
+        //Gestió d’errors
         .catch(err => {
           document.getElementById("loading").textContent = "Error carregant les dades";
           console.error("Error:", err);
         });
     }
+   
+    // async function init() {
+    //   await loadCompletedTasks();
+      
+    //   fetch(URL)
+    //     .then(res => res.text())
+    //     .then(data => {
+    //       const json = JSON.parse(data.substring(47, data.length - 2));
+    //       const rows = json.table.rows.map(r => r.c.map(c => c ? c.v : ""));
+          
+    //       document.getElementById("loading").style.display = "none";
+          
+    //       const tabsDiv = document.getElementById("tabs");
+    //       mesos.forEach((mes, idx) => {
+    //         const btn = document.createElement("button");
+    //         btn.className = "tab-link";
+    //         if (idx === 0) btn.classList.add("active");
+    //         btn.textContent = mes;
+    //         btn.onclick = (e) => openMonth(e, mes);
+    //         tabsDiv.appendChild(btn);
+    //       });
+          
+    //       const contentDiv = document.getElementById("tab-contents");
+    //       mesos.forEach((mes, idx) => {
+    //         const div = document.createElement("div");
+    //         div.id = mes;
+    //         div.className = "tab-content";
+    //         if (idx === 0) div.style.display = "block";
+            
+    //         const mesRows = rows.filter(r => r[1] === mes);
+            
+    //         if (mesRows.length === 0) {
+    //           div.innerHTML = `<div class="empty-state">No hi ha tasques per aquest mes</div>`;
+    //         } else {
+    //           const accions = [...new Set(mesRows.map(r => r[3]))];
+              
+    //           let html = `<div class="stats-bar"></div>`;
+              
+    //           accions.forEach(accio => {
+    //             html += `<div class="action-section"><div class="action-header">${accio}</div>`;
+                
+    //             mesRows.filter(r => r[3] === accio).forEach(r => {
+    //               const planta = r[0] || "Sense nom";
+    //               const lluna = r[4] || "";
+    //               const tipus = r[6] || "";
+    //               const notes = r[7] || "";
+                  
+    //               const taskId = getTaskId(mes, planta, accio);
+    //               const isCompleted = completedTasks[taskId] || false;
+                  
+    //               // Obtenir el dia de la fase lunar
+    //               const diaLlunar = getLunarPhaseDay(mes, lluna);
+    //               const llunaText = diaLlunar ? `${lluna} (dia ${diaLlunar})` : lluna;
+                  
+    //               html += `
+    //                 <div class="plant-card ${isCompleted ? 'completed' : ''}">
+    //                   <div class="checkbox-container">
+    //                     <input type="checkbox" class="checkbox" 
+    //                            data-task-id="${taskId}"
+    //                            ${isCompleted ? 'checked' : ''}>
+    //                   </div>
+    //                   <div class="plant-info">
+    //                     <div class="plant-name">${planta}</div>
+    //                     <div class="info-row">
+    //                       ${lluna ? `<div class="info-item"><span class="info-label">Lluna:</span> <span>${llunaText}</span></div>` : ''}
+    //                       ${tipus ? `<div class="info-item"><span class="info-label">Tipus plantació:</span> <span>${tipus}</span></div>` : ''}
+    //                       ${notes ? `<div class="info-item"><span class="info-label">Notes:</span> <span>${notes}</span></div>` : ''}
+    //                     </div>
+    //                   </div>
+    //                 </div>
+    //               `;
+    //             });
+                
+    //             html += `</div>`;
+    //           });
+              
+    //           div.innerHTML = html;
+              
+    //           div.querySelectorAll('.checkbox').forEach(checkbox => {
+    //             checkbox.addEventListener('change', function() {
+    //               toggleTask(this.dataset.taskId, this);
+    //             });
+    //           });
+    //         }
+            
+    //         contentDiv.appendChild(div);
+    //       });
+
+    //       updateStats();
+    //     })
+    //     .catch(err => {
+    //       document.getElementById("loading").textContent = "Error carregant les dades";
+    //       console.error("Error:", err);
+    //     });
+    // }
 
 
     // async function init() {

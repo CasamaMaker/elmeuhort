@@ -207,7 +207,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>el Meu Hort 41</h1>
+    <h1>el Meu Hort 42</h1>
   </div>
   
   <div class="tabs-container">
@@ -328,34 +328,22 @@
     
     let completedTasks = {};
     
-    // async function loadCompletedTasks() {
-    //   try {
-    //     const result = await window.storage.get('hort-completed-tasks');
-    //     completedTasks = result ? JSON.parse(result.value) : {};
-    //   } catch (e) {
-    //     completedTasks = {};
-    //   }
-    // }
-    function loadCompletedTasks() {
-      const data = localStorage.getItem('hort-completed-tasks');
-      completedTasks = data ? JSON.parse(data) : {};
+    async function loadCompletedTasks() {
+      try {
+        const result = await window.storage.get('hort-completed-tasks');
+        completedTasks = result ? JSON.parse(result.value) : {};
+      } catch (e) {
+        completedTasks = {};
+      }
     }
-
     
-    // async function saveCompletedTasks() {
-    //   try {
-    //     await window.storage.set('hort-completed-tasks', JSON.stringify(completedTasks));
-    //   } catch (e) {
-    //     console.error('Error guardant tasques:', e);
-    //   }
-    // }
-    function saveCompletedTasks() {
-      localStorage.setItem(
-        'hort-completed-tasks',
-        JSON.stringify(completedTasks)
-      );
+    async function saveCompletedTasks() {
+      try {
+        await window.storage.set('hort-completed-tasks', JSON.stringify(completedTasks));
+      } catch (e) {
+        console.error('Error guardant tasques:', e);
+      }
     }
-
     
     function getTaskId(mes, planta, accio) {
       return `${mes}_${planta}_${accio}`.replace(/\s/g, '_');
@@ -393,8 +381,7 @@
     
     async function init() {
       //Carregar tasques completades
-      // await loadCompletedTasks();
-      loadCompletedTasks();
+      await loadCompletedTasks();
       
       //Petició de dades (Google Sheets publicat)
       // fetch(URL)
@@ -437,7 +424,7 @@
             if (idx === 0) div.style.display = "block";
             
             //Filtrar files del mes
-            // const mesRows = rows.filter(r => r[mes_col] === mes);
+            const mesRows = rows.filter(r => r[mes_col] === mes);
             rows.forEach(r => {
               if (r[mes_col] && r[mes_col].includes("Ag")) {
                 console.log(">", JSON.stringify(r[mes_col]));

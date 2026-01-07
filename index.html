@@ -737,7 +737,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>el Meu Hort 47</h1>
+    <h1>el Meu Hort 48</h1>
   </div>
   
   <div class="tabs-container">
@@ -781,6 +781,9 @@
     }
     
     function getLunarPhaseDay(mes, lluna) {
+      let diaInici = null;
+      let diaFi = null;
+
       if (!lluna) return "";
       
       const llunaLower = lluna.toLowerCase();
@@ -814,8 +817,16 @@
         const faseActual = faseLunar(data);
         
         if (faseActual === faseDesitjada) {
-          return dia;
+          if (diaInici === null) diaInici = dia;
+          diaFi = dia;
+        } else if (diaInici !== null) {
+          break; // ja hem sortit del rang
         }
+
+        if (diaInici === null) return null;
+        return { inici: diaInici, fi: diaFi };
+
+
       }
       
       return "";
@@ -945,8 +956,19 @@
                   const isCompleted = completedTasks[taskId] || false;
                   
                   // Obtenir el dia de la fase lunar
-                  const diaLlunar = getLunarPhaseDay(mes, lluna);
-                  const llunaText = diaLlunar ? `${lluna} (dia ${diaLlunar})` : lluna;
+                  // const diaLlunar = getLunarPhaseDay(mes, lluna);
+                  // const llunaText = diaLlunar ? `${lluna} (dia ${diaLlunar})` : lluna;
+                  const rangLlunar = getLunarPhaseDay(mes, lluna);
+                  let llunaText = lluna;
+
+                  if (rangLlunar) {
+                    if (rangLlunar.inici === rangLlunar.fi) {
+                      llunaText = `${lluna} (dia ${rangLlunar.inici})`;
+                    } else {
+                      llunaText = `${lluna} (dies ${rangLlunar.inici}–${rangLlunar.fi})`;
+                    }
+                  }
+
                   
 
                   //HTML final de la targeta

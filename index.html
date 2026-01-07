@@ -737,7 +737,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>el Meu Hort 53</h1>
+    <h1>el Meu Hort 54</h1>
   </div>
   
   <div class="tabs-container">
@@ -989,7 +989,13 @@
                     if (rangLlunar.inici === rangLlunar.fi) {
                       llunaText = `${lluna} (dia ${rangLlunar.inici})`;
                     } else {
-                      llunaText = `${lluna} (dies ${rangLlunar.inici}–${rangLlunar.fi})`;
+                      // llunaText = `${lluna} (dies ${rangLlunar.inici}–${rangLlunar.fi})`;
+                      if (rangLlunar.inici.mes === rangLlunar.fi.mes) {
+                        llunaText = `${lluna} (dies ${rangLlunar.inici.dia}–${rangLlunar.fi.dia} ${rangLlunar.inici.mes})`;
+                      } else {
+                        llunaText = `${lluna} (dies ${rangLlunar.inici.dia} ${rangLlunar.inici.mes} – ${rangLlunar.fi.dia} ${rangLlunar.fi.mes})`;
+                      }
+
                     }
                   }
 

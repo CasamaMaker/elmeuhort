@@ -1,183 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="ca">
-<head>
-  <meta charset="UTF-8">
-  <title>La meva PWA</title>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#2b2b2b">
-  <link rel="icon" href="./favicon.ico" type="image/x-icon">
-</head>
-<body>
-  <h1>Funciona GitHub Pages</h1>
-  <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js');
-  }
-  </script>
-</body>
-</html> -->
-
-
-
-<!-- <!DOCTYPE html>
-<html lang="ca">
-<head>
-  <meta charset="UTF-8">
-  <link rel="manifest" href="manifest.json">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="./favicon.ico" type="image/x-icon">
-  <title>el Meu Hort</title>
-  <style>
-      body {
-          font-family: Arial, sans-serif;
-          margin: 0;
-          padding: 0;
-          background: #f4f4f4;
-      }
-
-      .tabs {
-          display: flex;
-          flex-wrap: wrap;
-          background: #2c3e50;
-      }
-
-      .tabs button {
-          flex: 1 0 14.28%;
-          padding: 10px;
-          background: #34495e;
-          color: white;
-          border: none;
-          cursor: pointer;
-          transition: background 0.3s;
-      }
-
-      .tabs button:hover {
-          background: #1abc9c;
-      }
-
-      .tabs button.active {
-          background: #1abc9c;
-      }
-
-      .tab-content {
-          padding: 20px;
-          background: white;
-          min-height: 200px;
-      }
-
-      .action-section {
-          margin-top: 15px;
-      }
-
-      .action-section h3 {
-          margin-bottom: 5px;
-          color: #2c3e50;
-      }
-
-      .action-section ul {
-          list-style: none;
-          padding-left: 0;
-      }
-
-      .action-section li {
-          background: #ecf0f1;
-          margin-bottom: 5px;
-          padding: 5px 10px;
-          border-radius: 4px;
-      }
-  </style>
-</head>
-<body>
-
-<div class="tabs" id="tabs"></div>
-<div id="tab-contents"></div>
-
-<script>
-const SHEET_ID = "1VmQdVqhokSYiHTfNNg7z4v4fLPePhAD53za76YBJnhg";
-const SHEET_NAME = "Full1"; // nom de la fulla
-const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${SHEET_NAME}&tq=&tqx=out:json`;
-
-let mesos = ["Gener","Febrer","Març","Abril","Maig","Juny","Juliol","Agost","Setembre","Octubre","Novembre","Desembre"];
-
-fetch(URL)
-  .then(res => res.text())
-  .then(data => {
-    const json = JSON.parse(data.substring(47, data.length-2));
-    const rows = json.table.rows.map(r => r.c.map(c => c ? c.v : ""));
-
-    // Generar botons dels mesos
-    const tabsDiv = document.getElementById("tabs");
-    mesos.forEach((mes, idx) => {
-        const btn = document.createElement("button");
-        btn.className = "tab-link";
-        if(idx===0) btn.classList.add("active");
-        btn.innerText = mes;
-        btn.onclick = (e) => openMonth(e, mes);
-        tabsDiv.appendChild(btn);
-    });
-
-    // Generar contingut dels mesos amb subapartats per acció
-    const contentDiv = document.getElementById("tab-contents");
-    mesos.forEach((mes, idx) => {
-        const div = document.createElement("div");
-        div.id = mes;
-        div.className = "tab-content";
-        if(idx!==0) div.style.display = "none";
-
-        const mesRows = rows.filter(r => r[1] === mes);
-        const accions = [...new Set(mesRows.map(r => r[3]))]; // llista única d'accions
-
-        let html = `<h2>${mes}</h2>`;
-        accions.forEach(accio => {
-            html += `<div class="action-section"><h3>${accio}</h3><ul>`;
-            mesRows.filter(r => r[3] === accio).forEach(r => {
-                html += `<li><strong>${r[0]}</strong> - Lluna: ${r[2]}, Tipus: ${r[4]}, Notes: ${r[5]}</li>`;
-            });
-            html += `</ul></div>`;
-        });
-
-        div.innerHTML = html;
-        contentDiv.appendChild(div);
-    });
-  })
-  .catch(err => console.error("Error carregant Google Sheet:", err));
-
-function openMonth(evt, monthName) {
-    const tabcontent = document.getElementsByClassName("tab-content");
-    for (let i = 0; i < tabcontent.length; i++) tabcontent[i].style.display = "none";
-
-    const tablinks = document.getElementsByClassName("tab-link");
-    for (let i = 0; i < tablinks.length; i++) tablinks[i].classList.remove("active");
-
-    document.getElementById(monthName).style.display = "block";
-    evt.currentTarget.classList.add("active");
-}
-</script>
-
-</body>
-</html> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="ca">
 <head>
@@ -406,35 +226,90 @@ function openMonth(evt, monthName) {
     
     const mesos = ["Gener","Febrer","Març","Abril","Maig","Juny","Juliol","Agost","Setembre","Octubre","Novembre","Desembre"];
     
-    // Dates de les fases lunars del 2026
-    const fasesLunars2026 = {
-      "Gener": { "plena": 3, "nova": 18, "creixent": 26, "minvant": 10 },
-      "Febrer": { "plena": 1, "nova": 17, "creixent": 25, "minvant": 8 },
-      "Març": { "plena": 3, "nova": 18, "creixent": 26, "minvant": 10 },
-      "Abril": { "plena": 2, "nova": 17, "creixent": 25, "minvant": 9 },
-      "Maig": { "plena": 1, "plena2": 31, "nova": 16, "creixent": 24, "minvant": 8 },
-      "Juny": { "plena": 30, "nova": 14, "creixent": 22, "minvant": 6 },
-      "Juliol": { "plena": 29, "nova": 14, "creixent": 22, "minvant": 6 },
-      "Agost": { "plena": 28, "nova": 12, "creixent": 20, "minvant": 4 },
-      "Setembre": { "plena": 26, "nova": 11, "creixent": 18, "minvant": 3 },
-      "Octubre": { "plena": 26, "nova": 10, "creixent": 17, "minvant": 2 },
-      "Novembre": { "plena": 24, "nova": 9, "creixent": 16, "minvant": 1 },
-      "Desembre": { "plena": 24, "nova": 8, "creixent": 16, "minvant": 1 }
-    };
+    // // Dates de les fases lunars del 2026
+    // const fasesLunars2026 = {
+    //   "Gener": { "plena": 3, "nova": 18, "creixent": 26, "minvant": 10 },
+    //   "Febrer": { "plena": 1, "nova": 17, "creixent": 25, "minvant": 8 },
+    //   "Març": { "plena": 3, "nova": 18, "creixent": 26, "minvant": 10 },
+    //   "Abril": { "plena": 2, "nova": 17, "creixent": 25, "minvant": 9 },
+    //   "Maig": { "plena": 1, "plena2": 31, "nova": 16, "creixent": 24, "minvant": 8 },
+    //   "Juny": { "plena": 30, "nova": 14, "creixent": 22, "minvant": 6 },
+    //   "Juliol": { "plena": 29, "nova": 14, "creixent": 22, "minvant": 6 },
+    //   "Agost": { "plena": 28, "nova": 12, "creixent": 20, "minvant": 4 },
+    //   "Setembre": { "plena": 26, "nova": 11, "creixent": 18, "minvant": 3 },
+    //   "Octubre": { "plena": 26, "nova": 10, "creixent": 17, "minvant": 2 },
+    //   "Novembre": { "plena": 24, "nova": 9, "creixent": 16, "minvant": 1 },
+    //   "Desembre": { "plena": 24, "nova": 8, "creixent": 16, "minvant": 1 }
+    // };
+    
+    // function getLunarPhaseDay(mes, lluna) {
+    //   if (!lluna || !fasesLunars2026[mes]) return "";
+      
+    //   const llunaLower = lluna.toLowerCase();
+      
+    //   if (llunaLower.includes("plena")) {
+    //     return fasesLunars2026[mes].plena;
+    //   } else if (llunaLower.includes("nova")) {
+    //     return fasesLunars2026[mes].nova;
+    //   } else if (llunaLower.includes("creixent")) {
+    //     return fasesLunars2026[mes].creixent;
+    //   } else if (llunaLower.includes("minvant")) {
+    //     return fasesLunars2026[mes].minvant;
+    //   }
+      
+    //   return "";
+    // }
+
+    // Càlcul dinàmic de les fases lunars
+    function faseLunar(date) {
+      const llunaNovaRef = new Date(Date.UTC(2000, 0, 6, 18, 14)); // 6/01/2000 18:14 UTC
+      const periodeLunar = 29.53058867; // dies
+      const dies = (date - llunaNovaRef) / 86400000;
+      const cicle = ((dies % periodeLunar) + periodeLunar) % periodeLunar;
+      const fase = cicle / periodeLunar;
+      
+      if (fase < 0.03 || fase > 0.97) return "nova";
+      if (fase < 0.25) return "creixent";
+      if (fase < 0.53) return "plena";
+      return "minvant";
+    }
     
     function getLunarPhaseDay(mes, lluna) {
-      if (!lluna || !fasesLunars2026[mes]) return "";
+      if (!lluna) return "";
       
       const llunaLower = lluna.toLowerCase();
+      let faseDesitjada = "";
       
       if (llunaLower.includes("plena")) {
-        return fasesLunars2026[mes].plena;
+        faseDesitjada = "plena";
       } else if (llunaLower.includes("nova")) {
-        return fasesLunars2026[mes].nova;
+        faseDesitjada = "nova";
       } else if (llunaLower.includes("creixent")) {
-        return fasesLunars2026[mes].creixent;
+        faseDesitjada = "creixent";
       } else if (llunaLower.includes("minvant")) {
-        return fasesLunars2026[mes].minvant;
+        faseDesitjada = "minvant";
+      } else {
+        return "";
+      }
+      
+      // Obtenir l'índex del mes (0-11)
+      const mesIndex = mesos.indexOf(mes);
+      if (mesIndex === -1) return "";
+      
+      const any = 2026; // Any actual
+      
+      // Buscar el primer dia del mes on coincideix la fase
+      for (let dia = 1; dia <= 31; dia++) {
+        const data = new Date(any, mesIndex, dia);
+        
+        // Comprovar que el dia està dins del mes
+        if (data.getMonth() !== mesIndex) break;
+        
+        const faseActual = faseLunar(data);
+        
+        if (faseActual === faseDesitjada) {
+          return dia;
+        }
       }
       
       return "";

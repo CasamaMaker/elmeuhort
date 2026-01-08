@@ -237,7 +237,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>el Meu Hort 63</h1>
+    <h1>el Meu Hort 64</h1>
   </div>
   
   <div class="tabs-container">
@@ -275,9 +275,9 @@
       const fase = cicle / periodeLunar;
 
 
-      if (fase < 0.01 || fase > 0.99) return "nova";
+      if (fase < 0.02 || fase > 0.98) return "nova";
       if (fase >= 0.22 && fase <= 0.45) return "creixent";
-      if (fase >= 0.49 && fase <= 0.51) return "plena";
+      if (fase >= 0.48 && fase <= 0.52) return "plena";
       if (fase >= 0.72 && fase <= 0.95) return "minvant";
       return "";
     }

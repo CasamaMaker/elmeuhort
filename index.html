@@ -737,7 +737,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>el Meu Hort 56</h1>
+    <h1>el Meu Hort 57</h1>
   </div>
   
   <div class="tabs-container">
@@ -869,8 +869,8 @@
       else return null;
       
       const any = 2026;
-      // let diaInici = null;
-      // let diaFi = null;
+      let diaInici = null;
+      let diaFi = null;
       const mesIndex = mesos.indexOf(mes);
       if (mesIndex === -1) return null;
 
@@ -1057,8 +1057,13 @@
                   let llunaText = lluna;
 
                   if (rangLlunar) {
-                    if (rangLlunar.inici === rangLlunar.fi) {
-                      llunaText = `${lluna} (dia ${rangLlunar.inici})`;
+                    // if (rangLlunar.inici === rangLlunar.fi) {
+                    if (
+                      rangLlunar.inici.dia === rangLlunar.fi.dia &&
+                      rangLlunar.inici.mes === rangLlunar.fi.mes
+                    ) {
+                      // llunaText = `${lluna} (dia ${rangLlunar.inici})`;
+                      llunaText = `${lluna} (dia ${rangLlunar.inici.dia} ${rangLlunar.inici.mes})`;
                     } else {
                       // llunaText = `${lluna} (dies ${rangLlunar.inici}–${rangLlunar.fi})`;
                       if (rangLlunar.inici.mes === rangLlunar.fi.mes) {

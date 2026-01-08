@@ -737,7 +737,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>el Meu Hort 55</h1>
+    <h1>el Meu Hort 56</h1>
   </div>
   
   <div class="tabs-container">
@@ -869,26 +869,57 @@
       else return null;
       
       const any = 2026;
-      let diaInici = null;
-      let diaFi = null;
+      // let diaInici = null;
+      // let diaFi = null;
+      const mesIndex = mesos.indexOf(mes);
+      if (mesIndex === -1) return null;
 
-      // Iterar tots els dies de l'any
-      for (let m = 0; m < 12; m++) {
-        for (let d = 1; d <= 31; d++) {
-          const data = new Date(any, m, d);
-          if (data.getMonth() !== m) break; // dia fora del mes
+      // marge de seguretat: 7 dies abans i després
+      const dataInici = new Date(any, mesIndex, 1 - 7);
+      const dataFi = new Date(any, mesIndex + 1, 7);
+
+
+      // // Iterar tots els dies de l'any
+      // for (let m = 0; m < 12; m++) {
+      //   for (let d = 1; d <= 31; d++) {
+      //     const data = new Date(any, m, d);
+      //     if (data.getMonth() !== m) break; // dia fora del mes
           
-          const faseActual = faseLunar(data);
+      //     const faseActual = faseLunar(data);
           
-          if (faseActual === faseDesitjada) {
-            if (!diaInici) diaInici = { mes: mesos[m], dia: d };
-            diaFi = { mes: mesos[m], dia: d };
-          } else if (diaInici) {
-            break; // hem sortit del rang
+      //     if (faseActual === faseDesitjada) {
+      //       if (!diaInici) diaInici = { mes: mesos[m], dia: d };
+      //       diaFi = { mes: mesos[m], dia: d };
+      //     } else if (diaInici) {
+      //       break; // hem sortit del rang
+      //     }
+      //   }
+      //   if (diaInici && diaFi) break;
+      // }
+
+      let cursor = new Date(dataInici);
+
+      while (cursor <= dataFi) {
+        const faseActual = faseLunar(cursor);
+
+        if (faseActual === faseDesitjada) {
+          if (!diaInici) {
+            diaInici = {
+              dia: cursor.getDate(),
+              mes: mesos[cursor.getMonth()]
+            };
           }
+          diaFi = {
+            dia: cursor.getDate(),
+            mes: mesos[cursor.getMonth()]
+          };
+        } else if (diaInici) {
+          break;
         }
-        if (diaInici && diaFi) break;
+
+        cursor.setDate(cursor.getDate() + 1);
       }
+
 
       if (!diaInici) return null;
       

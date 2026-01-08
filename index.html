@@ -237,7 +237,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>el Meu Hort 60</h1>
+    <h1>el Meu Hort 61</h1>
   </div>
   
   <div class="tabs-container">
@@ -307,6 +307,20 @@
 
       let cursor = new Date(dataInici);
 
+      function rangCurtInicial(inici, fi) {
+        if (!inici || !fi) return false;
+
+        const diesRang = fi.dia - inici.dia + 1;
+
+        return (
+          (faseDesitjada === "creixent" || faseDesitjada === "minvant") &&
+          inici.mes === mesos[mesIndex] &&
+          inici.dia <= 3 &&
+          diesRang <= 3
+        );
+      }
+
+
       while (cursor <= dataFi) {
         const faseActual = faseLunar(cursor);
 
@@ -322,11 +336,20 @@
             mes: mesos[cursor.getMonth()]
           };
         } else if (diaInici) {
-          break;
+          // Hem acabat un rang
+          if (rangCurtInicial(diaInici, diaFi)) {
+            // descartar rang i continuar buscant
+            diaInici = null;
+            diaFi = null;
+          } else {
+            break; // rang bo → sortir
+          }
         }
+
 
         cursor.setDate(cursor.getDate() + 1);
       }
+      if (rangCurtInicial(diaInici, diaFi)) return null;
 
 
       if (!diaInici) return null;
